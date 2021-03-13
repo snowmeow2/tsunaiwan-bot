@@ -144,4 +144,4 @@ async def help(ctx):
 
 ran_num = random.randint(101, 999)
 pics = check_pic()
-bot.run('NTU3NTE1NjE2NjM1MDYwMjQ0.D3fbKA.MLoBuI8J1nroYDI02CGKiEpPElY')
+bot.run(process.env.DISCORD_TOKEN)
