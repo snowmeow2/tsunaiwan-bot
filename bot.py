@@ -47,6 +47,8 @@ def imgbox_raw(url):
 
 @bot.event
 async def on_ready():
+    await bot.wait_until_ready()
+
     DEG = bot.get_channel(debug_room)
     embed=discord.Embed(title='**[Bot 重新啟動]**', description='Bot 回歸崗位：\n'+bot.user.name+' 以 '+str(bot.user.id), color=0xfef8ab, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
     embed.add_field(name="粗乃丸存量", value=len(pics), inline=True)
@@ -57,7 +59,7 @@ async def on_ready():
     await bot.change_presence(game=discord.Game(name="丸")) 
 
 @bot.event
-async def on_error(event, *args, **kwargs):	#觸發事件引起的錯誤回饋
+async def on_error(event, message):	#觸發事件引起的錯誤回饋
     embed=discord.Embed(title='**鋪能丸惹...**', description='詳細除錯資訊已通知 <@362130692311875591>', color=0xfef8ab, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
     embed.add_field(name="類型", value=event, inline=True)
     embed.add_field(name="內容", value=message.content, inline=True)
