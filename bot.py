@@ -10,8 +10,9 @@ bot = commands.Bot(command_prefix=prefix)
 headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/22.0'}
 
 #Channel ID
-debug_room = '560811425275314176'
-general_kitchen = '546573997870022657'
+debug_room = 560811425275314176
+general_kitchen = 546573997870022657
+
 
 def check_pic():
     f = open('resource/maru_url.txt')
@@ -47,16 +48,14 @@ def imgbox_raw(url):
 
 @bot.event
 async def on_ready():
-    await bot.wait_until_ready()
-
-    DEG = bot.get_channel(debug_room)
     embed=discord.Embed(title='**[Bot 重新啟動]**', description='Bot 回歸崗位：\n'+bot.user.name+' 以 '+str(bot.user.id), color=0xfef8ab, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
     embed.add_field(name="粗乃丸存量", value=len(pics), inline=True)
     embed.add_field(name="隨機數", value=ran_num, inline=True)
     embed.set_footer(text="粗乃丸圖庫", icon_url=bot.user.avatar_url)
 
+    DEG = bot.get_channel(debug_room)
     await DEG.send(embed=embed)
-    await bot.change_presence(game=discord.Game(name="丸")) 
+    await bot.change_presence(activity=discord.Game(name="丸")) 
 
 @bot.event
 async def on_error(event, message):	#觸發事件引起的錯誤回饋
@@ -66,7 +65,8 @@ async def on_error(event, message):	#觸發事件引起的錯誤回饋
     embed.set_footer(text="粗乃丸圖庫", icon_url=bot.user.avatar_url)
     await message.channel.send(embed=embed)
 
-    await bot.AppInfo.owner.send("開始回傳錯誤訊息：```\n"+str(traceback.format_exc())+"\n```")
+    DEG = bot.get_channel(debug_room)
+    await DEG.send("開始回傳錯誤訊息：```\n"+str(traceback.format_exc())+"\n```")
 
 @bot.event
 async def on_command_error(ctx, error):	#觸發命令引起的錯誤回饋
@@ -76,8 +76,10 @@ async def on_command_error(ctx, error):	#觸發命令引起的錯誤回饋
     embed.add_field(name="類型", value='command', inline=True)
     embed.add_field(name="內容", value=ctx.message.content, inline=True)
     embed.set_footer(text="粗乃丸圖庫", icon_url=bot.user.avatar_url)
-    await message.channel.send(embed=embed)
-    await bot.AppInfo.owner.send("開始回傳錯誤訊息：```\n"+str(error)+"\n```")
+    await ctx.send(embed=embed)
+
+    DEG = bot.get_channel(debug_room)
+    await DEG.send("開始回傳錯誤訊息：```\n"+str(error)+"\n```")
 
 @bot.event
 async def on_message(message):
@@ -146,4 +148,5 @@ async def help(ctx):
 
 ran_num = random.randint(101, 999)
 pics = check_pic()
-bot.run(os.getenv('DISCORD_TOKEN'))
+bot.run('NTU3NTE1NjE2NjM1MDYwMjQ0.XJDI4Q.yqaQ0XMDvf07ZIC7NEF-qdBv6BE')
+#bot.run(os.getenv('DISCORD_TOKEN'))
