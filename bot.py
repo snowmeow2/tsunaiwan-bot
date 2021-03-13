@@ -53,7 +53,7 @@ async def on_ready():
     embed.add_field(name="隨機數", value=ran_num, inline=True)
     embed.set_footer(text="粗乃丸圖庫", icon_url=bot.user.avatar_url)
 
-    await bot.AppInfo.owner.send(embed=embed)
+    await DEG.send(embed=embed)
     await bot.change_presence(game=discord.Game(name="丸")) 
 
 @bot.event
@@ -67,7 +67,7 @@ async def on_error(event, *args, **kwargs):	#觸發事件引起的錯誤回饋
     await bot.AppInfo.owner.send("開始回傳錯誤訊息：```\n"+str(traceback.format_exc())+"\n```")
 
 @bot.event
-async def on_command_error(error, ctx):	#觸發命令引起的錯誤回饋
+async def on_command_error(ctx, error):	#觸發命令引起的錯誤回饋
     if isinstance(error, commands.CommandNotFound):
         return
     embed=discord.Embed(title='**鋪能丸惹...**', description='詳細除錯資訊已通知 <@362130692311875591>', color=0xfef8ab, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
@@ -99,8 +99,8 @@ async def on_message(message):
         f.write(img.content)
         f.close()
         
-        #await bot.send_message(message.channel, "通通鋪蠢丸！！！:rage:")
-        await message.channel.send_file("maru.png")
+        #await message.channel.send("通通鋪蠢丸！！！:rage:")
+        await message.channel.send(file=discord.File('maru.png'))
         await asyncio.sleep(5)
         return
         
