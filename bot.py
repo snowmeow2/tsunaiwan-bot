@@ -12,6 +12,7 @@ headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/2010
 #Channel ID
 debug_room = '560811425275314176'
 general_kitchen = '546573997870022657'
+DEG = bot.get_channel(debug_room)
 
 def check_pic():
     f = open('resource/maru_url.txt')
@@ -35,15 +36,15 @@ def imgbox_raw(url):
 #顯示文章功能已停用
 '''async def out_mes(text, url, message):
     if len(text)< 2:
-        await bot.send_message(message.channel, text[0]+"...")
+        await ctx.send(text[0]+"...")
     elif len(text)< 3:
-        await bot.send_message(message.channel, text[0]+"\n"+text[1]+"...")
+        await ctx.send(text[0]+"\n"+text[1]+"...")
     elif len(text)< 4:
-        await bot.send_message(message.channel, text[0]+"\n"+text[1]+"\n"+text[2]+"...")
+        await ctx.send(text[0]+"\n"+text[1]+"\n"+text[2]+"...")
     elif len(text)> 4:
-        await bot.send_message(message.channel, text[0]+"\n"+text[1]+"\n"+text[2]+"\n"+text[3]+"...")
+        await ctx.send(text[0]+"\n"+text[1]+"\n"+text[2]+"\n"+text[3]+"...")
     if url != None:
-        await bot.send_message(message.channel, "Check! ===> "+url)'''
+        await ctx.send("Check! ===> "+url)'''
 
 @bot.event
 async def on_ready():
@@ -52,7 +53,7 @@ async def on_ready():
     embed.add_field(name="隨機數", value=ran_num, inline=True)
     embed.set_footer(text="粗乃丸圖庫", icon_url=bot.user.avatar_url)
 
-    await bot.send_message(bot.get_channel(debug_room), embed=embed)
+    await DEG.send(embed=embed)
     await bot.change_presence(game=discord.Game(name="丸")) 
 
 @bot.event
@@ -62,9 +63,9 @@ async def on_error(event, *args, **kwargs):	#觸發事件引起的錯誤回饋
     embed.add_field(name="類型", value=event, inline=True)
     embed.add_field(name="內容", value=message.content, inline=True)
     embed.set_footer(text="粗乃丸圖庫", icon_url=bot.user.avatar_url)
-    await bot.send_message(message.channel, embed=embed)
+    await ctx.send(embed=embed)
 
-    await bot.send_message(bot.get_channel(debug_room), "開始回傳錯誤訊息：```\n"+str(traceback.format_exc())+"\n```")
+    await DEG.send("開始回傳錯誤訊息：```\n"+str(traceback.format_exc())+"\n```")
 
 @bot.event
 async def on_command_error(error, ctx):	#觸發命令引起的錯誤回饋
@@ -74,8 +75,8 @@ async def on_command_error(error, ctx):	#觸發命令引起的錯誤回饋
     embed.add_field(name="類型", value='command', inline=True)
     embed.add_field(name="內容", value=ctx.message.content, inline=True)
     embed.set_footer(text="粗乃丸圖庫", icon_url=bot.user.avatar_url)
-    await bot.send_message(ctx.message.channel, embed=embed)
-    await bot.send_message(bot.get_channel(debug_room), "開始回傳錯誤訊息：```\n"+str(error)+"\n```")
+    await ctx.send(embed=embed)
+    await DEG.send("開始回傳錯誤訊息：```\n"+str(error)+"\n```")
 
 @bot.event
 async def on_message(message):
@@ -84,11 +85,11 @@ async def on_message(message):
     await bot.process_commands(message)	#先進行是否為指令的判斷
 	
     if message.content == "tttt":	#Debug用
-        await bot.send_message(bot.get_channel(a), "Xixixi...")
+        await ctx.send(bot.get_channel(a), "Xixixi...")
 
     if message.content.startswith('!'):	#複製文詢問功能已停用
         if message.content.replace("!", "").replace("?", "") != '':
-            await bot.send_message(message.channel, "您好，因使用政策的更動，此聊天機器人不再支援圖庫之外的其他功能，敬請見諒。\n欲查詢已停用之服務列表，請輸入`~disable`；欲查閱使用說明，請輸入`~help`。")
+            await ctx.send("您好，因使用政策的更動，此聊天機器人不再支援圖庫之外的其他功能，敬請見諒。\n欲查詢已停用之服務列表，請輸入`~disable`；欲查閱使用說明，請輸入`~help`。")
         return
         
     if "丸".encode("utf-8") in message.content.encode("utf-8"):#正在測試圖庫
@@ -100,7 +101,7 @@ async def on_message(message):
         f.close()
         
         #await bot.send_message(message.channel, "通通鋪蠢丸！！！:rage:")
-        await bot.send_file(message.channel, "maru.png")
+        await ctx.send_file("maru.png")
         await asyncio.sleep(5)
         return
         
@@ -109,15 +110,15 @@ async def stop(ctx, password=0):
     if int(password) == ran_num:
         await bot.logout()
     else:
-        await bot.send_message(ctx.message.channel, "權限不足！:rage:")        
+        await ctx.send("權限不足！:rage:")        
 
 @bot.command()
 async def tttt(ctx):
-    await bot.send_message(bot.get_channel(a), "Xixixi...")
+    await ctx.send(bot.get_channel(a), "Xixixi...")
 
 @bot.command()
 async def disable(ctx):
-    await bot.send_message(ctx.message.channel, "下列是因使用政策變更而停用的服務清單：```\
+    await ctx.send("下列是因使用政策變更而停用的服務清單：```\
     中文翻譯（使用Google Translation）\n\
     Arxiv論文自動索引、摘要翻譯節錄\n\
     Komica綜合版討論串結構分析、文字雲生成\n\
@@ -137,9 +138,9 @@ async def help(ctx):
     embed.add_field(name="~stop", value="關閉機器人（僅限管理者使用）。", inline=False)
     embed.add_field(name="~disable", value="顯示機器人停用的服務。", inline=False)
     embed.set_footer(text="粗乃丸圖庫", icon_url=bot.user.avatar_url)
-    await bot.send_message(ctx.message.channel, embed=embed)
+    await ctx.send(embed=embed)
     
-    await bot.send_message(ctx.message.channel, "**<@362130692311875591> https://komicapy.blogspot.com/**")
+    await ctx.send("**<@362130692311875591> https://komicapy.blogspot.com/**")
     return    
 
 ran_num = random.randint(101, 999)
