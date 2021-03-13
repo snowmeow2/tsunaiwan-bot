@@ -148,5 +148,4 @@ async def help(ctx):
 
 ran_num = random.randint(101, 999)
 pics = check_pic()
-bot.run('NTU3NTE1NjE2NjM1MDYwMjQ0.XJDI4Q.yqaQ0XMDvf07ZIC7NEF-qdBv6BE')
-#bot.run(os.getenv('DISCORD_TOKEN'))
+bot.run(os.getenv('DISCORD_TOKEN'))
