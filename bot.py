@@ -12,7 +12,6 @@ headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/2010
 #Channel ID
 debug_room = '560811425275314176'
 general_kitchen = '546573997870022657'
-DEG = bot.get_channel(debug_room)
 
 def check_pic():
     f = open('resource/maru_url.txt')
@@ -48,6 +47,7 @@ def imgbox_raw(url):
 
 @bot.event
 async def on_ready():
+    DEG = bot.get_channel(debug_room)
     embed=discord.Embed(title='**[Bot 重新啟動]**', description='Bot 回歸崗位：\n'+bot.user.name+' 以 '+str(bot.user.id), color=0xfef8ab, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
     embed.add_field(name="粗乃丸存量", value=len(pics), inline=True)
     embed.add_field(name="隨機數", value=ran_num, inline=True)
