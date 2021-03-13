@@ -104,18 +104,18 @@ async def on_message(message):
         await asyncio.sleep(5)
         return
         
-@bot.command(pass_context=True)
+@bot.command()
 async def stop(ctx, password=0):
     if int(password) == ran_num:
         await bot.logout()
     else:
         await bot.send_message(ctx.message.channel, "權限不足！:rage:")        
 
-@bot.command(pass_context=True)
+@bot.command()
 async def tttt(ctx):
     await bot.send_message(bot.get_channel(a), "Xixixi...")
 
-@bot.command(pass_context=True)
+@bot.command()
 async def disable(ctx):
     await bot.send_message(ctx.message.channel, "下列是因使用政策變更而停用的服務清單：```\
     中文翻譯（使用Google Translation）\n\
@@ -128,7 +128,7 @@ async def disable(ctx):
     基於句向量的自動回文演算法（使用Bert中文模型） ```")
 
 bot.remove_command('help')
-@bot.command(pass_context=True)
+@bot.command()
 async def help(ctx):
     embed = discord.Embed(title="**＜粗乃丸圖庫 Bot＞**", description="這是一隻專門散佈粗乃丸口愛豪丸的聊天機器人。下面是功能清單：", color=0xeee657, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
     
