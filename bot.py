@@ -53,19 +53,18 @@ async def on_ready():
     embed.add_field(name="隨機數", value=ran_num, inline=True)
     embed.set_footer(text="粗乃丸圖庫", icon_url=bot.user.avatar_url)
 
-    await DEG.send(embed=embed)
+    await bot.AppInfo.owner.send(embed=embed)
     await bot.change_presence(game=discord.Game(name="丸")) 
 
 @bot.event
 async def on_error(event, *args, **kwargs):	#觸發事件引起的錯誤回饋
-    message = args[0]
     embed=discord.Embed(title='**鋪能丸惹...**', description='詳細除錯資訊已通知 <@362130692311875591>', color=0xfef8ab, timestamp=datetime.datetime.utcfromtimestamp(time.time()))
     embed.add_field(name="類型", value=event, inline=True)
     embed.add_field(name="內容", value=message.content, inline=True)
     embed.set_footer(text="粗乃丸圖庫", icon_url=bot.user.avatar_url)
-    await ctx.send(embed=embed)
+    await message.channel.send(embed=embed)
 
-    await DEG.send("開始回傳錯誤訊息：```\n"+str(traceback.format_exc())+"\n```")
+    await bot.AppInfo.owner.send("開始回傳錯誤訊息：```\n"+str(traceback.format_exc())+"\n```")
 
 @bot.event
 async def on_command_error(error, ctx):	#觸發命令引起的錯誤回饋
@@ -75,8 +74,8 @@ async def on_command_error(error, ctx):	#觸發命令引起的錯誤回饋
     embed.add_field(name="類型", value='command', inline=True)
     embed.add_field(name="內容", value=ctx.message.content, inline=True)
     embed.set_footer(text="粗乃丸圖庫", icon_url=bot.user.avatar_url)
-    await ctx.send(embed=embed)
-    await DEG.send("開始回傳錯誤訊息：```\n"+str(error)+"\n```")
+    await message.channel.send(embed=embed)
+    await bot.AppInfo.owner.send("開始回傳錯誤訊息：```\n"+str(error)+"\n```")
 
 @bot.event
 async def on_message(message):
@@ -85,11 +84,11 @@ async def on_message(message):
     await bot.process_commands(message)	#先進行是否為指令的判斷
 	
     if message.content == "tttt":	#Debug用
-        await ctx.send(bot.get_channel(a), "Xixixi...")
+        await message.channel.send(bot.get_channel(a), "Xixixi...")
 
     if message.content.startswith('!'):	#複製文詢問功能已停用
         if message.content.replace("!", "").replace("?", "") != '':
-            await ctx.send("您好，因使用政策的更動，此聊天機器人不再支援圖庫之外的其他功能，敬請見諒。\n欲查詢已停用之服務列表，請輸入`~disable`；欲查閱使用說明，請輸入`~help`。")
+            await message.channel.send("您好，因使用政策的更動，此聊天機器人不再支援圖庫之外的其他功能，敬請見諒。\n欲查詢已停用之服務列表，請輸入`~disable`；欲查閱使用說明，請輸入`~help`。")
         return
         
     if "丸".encode("utf-8") in message.content.encode("utf-8"):#正在測試圖庫
@@ -101,7 +100,7 @@ async def on_message(message):
         f.close()
         
         #await bot.send_message(message.channel, "通通鋪蠢丸！！！:rage:")
-        await ctx.send_file("maru.png")
+        await message.channel.send_file("maru.png")
         await asyncio.sleep(5)
         return
         
