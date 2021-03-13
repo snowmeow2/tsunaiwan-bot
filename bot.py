@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 '''！這是發送粗乃丸圖片的專屬機器人，不要搞混！'''
-import random, time, discord, asyncio, traceback, datetime, requests
+import random, time, discord, asyncio, traceback, datetime, requests, os
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
 from discord.ext import commands
@@ -144,4 +144,4 @@ async def help(ctx):
 
 ran_num = random.randint(101, 999)
 pics = check_pic()
-bot.run(process.env.DISCORD_TOKEN)
+bot.run(os.getenv('DISCORD_TOKEN'))
